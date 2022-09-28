@@ -32,7 +32,7 @@ class MathServiceTest {
             List<Double> numbers = LIST_OF_ONLY_VALID_NUMBERS;
             int quantifier = LIST_OF_ONLY_VALID_NUMBERS.size() - 1;
             NumbersQuantifierRequest request = new NumbersQuantifierRequest(numbers, quantifier);
-            List<Double> minNumbers = objectUnderTest.findMinNumbers(request);
+            List<Double> minNumbers = objectUnderTest.findMinNumbers(numbers,quantifier);
             assertThat(minNumbers).hasSize(quantifier);
         }
 
@@ -41,7 +41,7 @@ class MathServiceTest {
             List<Double> numbers = LIST_OF_ONLY_VALID_NUMBERS;
             int quantifier = LIST_OF_ONLY_VALID_NUMBERS.size() + 100;
             NumbersQuantifierRequest request = new NumbersQuantifierRequest(numbers, quantifier);
-            List<Double> minNumbers = objectUnderTest.findMinNumbers(request);
+            List<Double> minNumbers = objectUnderTest.findMinNumbers(numbers, quantifier);
             assertThat(minNumbers).hasSize(numbers.size());
         }
 
@@ -51,8 +51,7 @@ class MathServiceTest {
             List<Double> number = new ArrayList<>(LIST_OF_ONLY_VALID_NUMBERS);
             number.addAll(LIST_OF_ONLY_INVALID_NUMBERS);
             int quantifier = LIST_OF_ONLY_VALID_NUMBERS.size() + 100;
-            NumbersQuantifierRequest request = new NumbersQuantifierRequest(number, quantifier);
-            List<Double> minNumbers = objectUnderTest.findMinNumbers(request);
+            List<Double> minNumbers = objectUnderTest.findMinNumbers(number, quantifier);
             assertThat(minNumbers).hasSize(LIST_OF_ONLY_VALID_NUMBERS.size());
         }
 
@@ -61,8 +60,7 @@ class MathServiceTest {
 
             List<Double> number = new ArrayList<>(LIST_OF_ONLY_VALID_NUMBERS);
             int quantifier = 2;
-            NumbersQuantifierRequest request = new NumbersQuantifierRequest(number, quantifier);
-            List<Double> minNumbers = objectUnderTest.findMinNumbers(request);
+            List<Double> minNumbers = objectUnderTest.findMinNumbers(number, quantifier);
             assertThat(minNumbers).containsAll(Arrays.asList(-0.2, 0.3));
         }
 
@@ -71,8 +69,7 @@ class MathServiceTest {
 
             List<Double> number = new ArrayList<>(LIST_OF_ONLY_VALID_NUMBERS);
             number.addAll(LIST_OF_ONLY_INVALID_NUMBERS);
-            NumbersQuantifierRequest request = new NumbersQuantifierRequest(number, number.size());
-            List<Double> minNumbers = objectUnderTest.findMinNumbers(request);
+            List<Double> minNumbers = objectUnderTest.findMinNumbers(number, number.size());
             assertThat(minNumbers).containsAll(LIST_OF_ONLY_VALID_NUMBERS);
         }
 
@@ -81,8 +78,7 @@ class MathServiceTest {
 
             List<Double> number = new ArrayList<>(LIST_OF_ONLY_VALID_NUMBERS);
             number.addAll(LIST_OF_ONLY_INVALID_NUMBERS);
-            NumbersQuantifierRequest request = new NumbersQuantifierRequest(number, number.size());
-            List<Double> minNumbers = objectUnderTest.findMinNumbers(request);
+            List<Double> minNumbers = objectUnderTest.findMinNumbers(number, number.size());
             assertThat(minNumbers).noneMatch(aDouble -> aDouble.isNaN());
             assertThat(minNumbers).noneMatch(Objects::isNull);
         }
@@ -91,8 +87,7 @@ class MathServiceTest {
         public void emptyListIsReturned_whenThereIsNoValidNumber() {
 
             List<Double> number = new ArrayList<>(LIST_OF_ONLY_INVALID_NUMBERS);
-            NumbersQuantifierRequest request = new NumbersQuantifierRequest(number, number.size());
-            List<Double> minNumbers = objectUnderTest.findMinNumbers(request);
+            List<Double> minNumbers = objectUnderTest.findMinNumbers(number, number.size());
             assertThat(minNumbers).isEmpty();
         }
     }
@@ -104,8 +99,7 @@ class MathServiceTest {
             List<Double> numbers = new ArrayList<>(LIST_OF_ONLY_VALID_NUMBERS);
             numbers.addAll(LIST_OF_ONLY_INVALID_NUMBERS);
             Collections.shuffle(numbers);
-            NumbersProcessingRequest request = new NumbersProcessingRequest(numbers);
-            Double actualAverage = objectUnderTest.calculateAverage(request);
+            Double actualAverage = objectUnderTest.calculateAverage(numbers);
             assertThat(actualAverage).isEqualTo(1.22);
         }
 
@@ -114,8 +108,7 @@ class MathServiceTest {
 
             UnprocessableRequestException exception = assertThrows(UnprocessableRequestException.class, () -> {
                 List<Double> numbers = new ArrayList<>(LIST_OF_ONLY_INVALID_NUMBERS);
-                NumbersProcessingRequest request = new NumbersProcessingRequest(numbers);
-                objectUnderTest.calculateAverage(request);
+                objectUnderTest.calculateAverage(numbers);
             });
             assertThat(exception.getMessage()).isEqualTo(ErrorMessage.AVERAGE_CAN_NOT_BE_CALCULATED);
             assertThat(exception.getDetails()).containsOnly(ErrorMessage.MINIMUM_ONE_VALID_NON_NULL_NUMBER_IS_REQUIRED);

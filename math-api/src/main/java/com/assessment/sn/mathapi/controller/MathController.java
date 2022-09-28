@@ -26,26 +26,26 @@ public class MathController {
 
     @PostMapping(path = "/min", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<OperationResult<List<Double>>> findMinNumbers(@Valid @RequestBody NumbersQuantifierRequest request) {
-        return new ResponseEntity<>(new OperationResult<>(mathService.findMinNumbers(request)), HttpStatus.OK);
+        return new ResponseEntity<>(new OperationResult<>(mathService.findMinNumbers(request.getNumbers(),request.getQuantifier())), HttpStatus.OK);
     }
 
     @PostMapping(path = "/max", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<OperationResult<List<Double>>> findMaxNumbers(@Valid @RequestBody NumbersQuantifierRequest request) {
-        return new ResponseEntity<>(new OperationResult<>(mathService.findMaxNumbers(request)), HttpStatus.OK);
+        return new ResponseEntity<>(new OperationResult<>(mathService.findMaxNumbers(request.getNumbers(), request.getQuantifier())), HttpStatus.OK);
     }
 
     @PostMapping(path = "/avg", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<OperationResult<Double>> calculateAverage(@Valid @RequestBody NumbersProcessingRequest request) {
-        return new ResponseEntity<>(new OperationResult<>(mathService.calculateAverage(request)), HttpStatus.OK);
+        return new ResponseEntity<>(new OperationResult<>(mathService.calculateAverage(request.getNumbers())), HttpStatus.OK);
     }
 
     @PostMapping(path = "/median", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<OperationResult<Double>>  calculateMedian(@Valid @RequestBody NumbersProcessingRequest request) {
-        return new ResponseEntity<>(new OperationResult<>(mathService.calculateMedian(request)), HttpStatus.OK);
+        return new ResponseEntity<>(new OperationResult<>(mathService.calculateMedian(request.getNumbers())), HttpStatus.OK);
     }
 
     @PostMapping(path = "/percentile", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<OperationResult<Double>>  calculatePercentile(@Valid @RequestBody NumbersQuantifierRequest request) {
-        return new ResponseEntity<>(new OperationResult<>(mathService.calculatePercentile(request)), HttpStatus.OK);
+        return new ResponseEntity<>(new OperationResult<>(mathService.calculatePercentile(request.getNumbers(), request.getQuantifier())), HttpStatus.OK);
     }
 }
