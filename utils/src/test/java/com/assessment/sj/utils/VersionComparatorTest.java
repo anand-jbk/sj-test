@@ -20,8 +20,8 @@ class VersionComparatorTest {
         Assertions.assertEquals(1,objectUnderTest.compare(version1,version2));
     }
 
-    @ParameterizedTest(name = "Version {1} is greater then {0}.")
-    @CsvSource ({"1.0,1.1", "0.9,1.0", "1,1.0", "0,1"})
+    @ParameterizedTest(name = "Version {0} is smaller then {1}.")
+    @CsvSource ({"1.0,1.1", "0.9,1.0", "1,1.0", "0,1", "1,1.0", "1.0, 1.0.0"})
     void whenSecondVersionIsGreater_thenComparatorReturnsCorrectValue(String version1, String version2) {
         Assertions.assertEquals(-1,objectUnderTest.compare(version1,version2));
     }
